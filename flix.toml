@@ -4,3 +4,4 @@ description = "A library of unsigned integers and operations"
 version     = "0.1.0"
 flix        = "0.44.0"
 authors     = ["Matthew Lutze"]
+repository  = "github:mlutze/flix-unsigned"

@@ -25,4 +25,4 @@ jobs:
           java -jar flix.jar build-pkg
       - name: Release the package
         run: |
-          java -jar flix.jar release --yes
+          java -jar flix.jar release --yes --github-token ${{ github.token }}
