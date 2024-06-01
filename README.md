@@ -1,4 +1,4 @@
 # flix-unsigned
 
-Enter some useful information.
+Unsigned integer types and operations.
 

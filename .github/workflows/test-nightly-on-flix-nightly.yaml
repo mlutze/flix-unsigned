@@ -1,0 +1,24 @@
+name: Test Nightly on Flix Nightly
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  test-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2.5.0
+        with:
+          java-version: 21
+          distribution: zulu
+      - name: Download Flix JAR
+        run: |
+          url="https://flix.dev/nightly/flix-latest.jar"
+          curl -L -f "$url" > flix.jar
+      - name: Run tests
+        run: |
+          java -jar flix.jar test --github-token ${{ github.token }}
