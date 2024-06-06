@@ -1,4 +1,4 @@
-enum UnsignedInt64(Int64) with Eq
+enum UnsignedInt64(Int64) with Eq, Coerce, Hash
 
 instance Order[UnsignedInt64] {
     pub def compare(u1: UnsignedInt64, u2: UnsignedInt64): Comparison = UnsignedInt64.compare(u1, u2)
@@ -39,11 +39,6 @@ instance Div[UnsignedInt64] {
 
 
 mod UnsignedInt64 {
-    pub def coerce(u: UnsignedInt64): Int64 = {
-        let UnsignedInt64.UnsignedInt64(i) = u;
-        i
-    }
-
     pub def map(f: Int64 -> Int64 \ ef, u: UnsignedInt64): UnsignedInt64 \ ef = {
         UnsignedInt64(f(coerce(u)))
     }

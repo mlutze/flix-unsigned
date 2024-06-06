@@ -1,4 +1,4 @@
-enum UnsignedInt32(Int32) with Eq
+enum UnsignedInt32(Int32) with Eq, Coerce, Hash
 
 instance Order[UnsignedInt32] {
     pub def compare(u1: UnsignedInt32, u2: UnsignedInt32): Comparison = UnsignedInt32.compare(u1, u2)
@@ -39,11 +39,6 @@ instance Div[UnsignedInt32] {
 
 
 mod UnsignedInt32 {
-    pub def coerce(u: UnsignedInt32): Int32 = {
-        let UnsignedInt32.UnsignedInt32(i) = u;
-        i
-    }
-
     pub def map(f: Int32 -> Int32 \ ef, u: UnsignedInt32): UnsignedInt32 \ ef = {
         UnsignedInt32(f(coerce(u)))
     }
