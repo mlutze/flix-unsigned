@@ -1,3 +1,5 @@
+import java.lang.Long
+
 enum UnsignedInt64(Int64) with Eq, Coerce, Hash
 
 instance Order[UnsignedInt64] {
@@ -32,13 +34,14 @@ instance Mul[UnsignedInt64] {
 
 instance Div[UnsignedInt64] {
     pub def div(u1: UnsignedInt64, u2: UnsignedInt64): UnsignedInt64 = {
-        import static java.lang.Long.divideUnsigned(Int64, Int64): Int64 \ {};
-        UnsignedInt64.map2(divideUnsigned, u1, u2)
+        UnsignedInt64.map2((i1, i2) -> Long.divideUnsigned(i1, i2), u1, u2)
     }
 }
 
 
 mod UnsignedInt64 {
+    import java.lang.Long
+
     pub def map(f: Int64 -> Int64 \ ef, u: UnsignedInt64): UnsignedInt64 \ ef = {
         UnsignedInt64(f(coerce(u)))
     }
@@ -48,20 +51,33 @@ mod UnsignedInt64 {
     }
 
     pub def fromString(s: String): Option[UnsignedInt64] = {
-        import static java.lang.Long.parseUnsignedLong(String): Int64 \ {};
-        Result.tryCatch(() -> parseUnsignedLong(s))
+        Result.tryCatch(() -> Long.parseUnsignedLong(s))
         |> Result.toOption
         |> Option.map(UnsignedInt64)
     }
 
     pub def toString(u: UnsignedInt64): String = {
-        import static java.lang.Long.toUnsignedString(Int64): String \ {};
-        toUnsignedString(coerce(u))
+        Long.toUnsignedString(coerce(u))
     }
 
     pub def compare(u1: UnsignedInt64, u2: UnsignedInt64): Comparison = {
-        import static java.lang.Long.compareUnsigned(Int64, Int64): Int32 \ {};
-        compareUnsigned(coerce(u1), coerce(u2))
+        Long.compareUnsigned(coerce(u1), coerce(u2))
         |> Comparison.fromInt32
+    }
+
+    pub def toBigInt(u: UnsignedInt64): BigInt = {
+        let opt = u |> toString |> BigInt.fromString;
+        match opt {
+            case None => unreachable!()
+            case Some(i) => i
+        }
+    }
+
+    pub def fromInt32(u: Int32): UnsignedInt64 = {
+        let opt = u |> Int32.toString |> fromString;
+        match opt {
+            case None => unreachable!()
+            case Some(i) => i
+        }
     }
 }
